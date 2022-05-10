@@ -20,11 +20,16 @@ class TelegramHandler {
 		})
 	}
 
-	async shorten_1(chatId) {
+	async start(chatId) {
 		await this.telegramBot.sendMessage(
 			chatId,
-			'Paste the url in the chat, example: https://google.com'
+			'Hello.., just paste the link to get shorten URL, example: https://google.com'
 		)
+		await this._setStateDataSuccess(chatId)
+	}
+
+	async shorten_1(chatId) {
+		await this.telegramBot.sendMessage(chatId, 'Paste the link, example: https://google.com')
 		await this._setStateDataSuccess(chatId)
 	}
 
@@ -146,6 +151,11 @@ class TelegramHandler {
 
 	createState() {
 		return {
+			start: {
+				name: 'start',
+				handle: this.start.bind(this),
+				next: '',
+			},
 			shorten_1: {
 				name: 'shorten_1',
 				handle: this.shorten_1.bind(this),
@@ -198,6 +208,7 @@ class TelegramHandler {
 		let state
 		const telegramState = this.createState()
 		const telegramCommand = Object.freeze({
+			start: '/start',
 			shorten: '/shorten',
 			list: '/list',
 			delete: '/delete',
@@ -206,6 +217,9 @@ class TelegramHandler {
 		if (Object.values(telegramCommand).includes(text)) {
 			await this.service.deleteState(chatId)
 			switch (text) {
+				case telegramCommand.start:
+					state = await this._setStateData(chatId, telegramState.start.name)
+					break
 				case telegramCommand.shorten:
 					state = await this._setStateData(chatId, telegramState.shorten_1.name)
 					break
