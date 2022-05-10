@@ -1,0 +1,21 @@
+{
+  "name": "wee.id",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "fastify": "^3.29.0",
+    "http-errors": "^2.0.0",
+    "node-telegram-bot-api": "^0.57.0",
+    "promise-mysql": "^5.2.0",
+    "redis": "^4.1.0",
+    "telegram-keyboard": "^2.3.0",
+    "valid-url": "^1.0.9"
+  }
+}
