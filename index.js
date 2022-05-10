@@ -19,16 +19,24 @@ const main = async () => {
 		redisClient = createClient(config.redis)
 		await redisClient.connect()
 		teleBot = new TelegramBot(config.telegramToken, { polling: true })
-		// await fastify.listen(config.httpListenPort)
 	} catch (error) {
 		console.log('init.errors')
 		console.log(error)
 		process.exit(1)
 	}
+
 	const repo = new Repo(redisClient, mysqlClient)
 	const service = new Service(repo)
-	// new HttpHandler(service, fastify)
+	new HttpHandler(service, fastify)
 	new TelegramHandler(service, teleBot)
+
+	try {
+		await fastify.listen(config.httpListenPort)
+	} catch (error) {
+		console.log('init.errors')
+		console.log(error)
+		process.exit(1)
+	}
 }
 
 main()

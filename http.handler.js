@@ -1,4 +1,6 @@
 const httpErrors = require('http-errors')
+const config = require('./config')
+
 class HttpHandler {
 	constructor(service, server) {
 		this.service = service
@@ -10,7 +12,7 @@ class HttpHandler {
 	}
 	async redirectShorten(req, rep) {
 		const serial = req.params.serial
-		const originalUrl = this.service.getOriginalUrlBySerialAndVisit(serial)
+		const originalUrl = await this.service.getOriginalUrlBySerialAndVisit(serial)
 		if (!originalUrl) {
 			throw new httpErrors.NotFound()
 		}
